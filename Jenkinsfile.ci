@@ -18,6 +18,13 @@ pipeline {
         }
 
         stage('Test') {
+        
+            environment {
+              TOMCAT = credentials('tomcat_user')
+            }
+        
+        
+        
             steps {
                 snDevOpsStep()
                 sh '''
@@ -28,21 +35,25 @@ pipeline {
 
                 sh 'mvn verify'
 
-                script {
-                    sshPublisher(continueOnError: false, failOnError: true,
-                    publishers: [
-                        sshPublisherDesc(
-                            configName:'CorpSite UAT',
-                            verbose: true,
-                            transfers: [
-                                sshTransfer(
-                                    sourceFiles: 'target/globex-web.war',
-                                    removePrefix: 'target/',
-                                    remoteDirectory: '/opt/tomcat/webapps'
-                                )
-                            ]
-                        )
-                    ])
+
+                script {     
+                
+                    sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://tomcat:8080/manager/text/deploy?path=/globex_test&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@target/globex-web.war\''                
+                
+                    #sshPublisher(continueOnError: false, failOnError: true,
+                    #publishers: [
+                    #    sshPublisherDesc(
+                    #        configName:'CorpSite UAT',
+                    #        verbose: true,
+                    #        transfers: [
+                    #            sshTransfer(
+                    #                sourceFiles: 'target/globex-web.war',
+                    #                removePrefix: 'target/',
+                    #                remoteDirectory: '/opt/tomcat/webapps'
+                    #            )
+                    #        ]
+                    #    )
+                    #])
                 }
             }
             post {
