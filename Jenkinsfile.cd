@@ -1,91 +1,39 @@
 pipeline {
     agent any
-    tools {
-        maven 'Jenkins Maven'
+    tools { 
+        maven 'Jenkins Maven' 
     }
-
+    
     parameters {
         string(name: 'artifactVersion')
     }
-
+    
     stages {
         stage('Setup') {
+             environment {
+              JENKINS = credentials('jenkins_user')
+            }       
             steps {
-                snDevOpsStep()
-                snDevOpsPackage(name: "package", artifactsPayload: ""
-                    "{"
-                    artifacts ": [{"
-                    name ": "
-                    globex - web.war ", "
-                    repositoryName ": "
-                    Repo1 ", "
-                    version ": "
-                    $ {
-                        artifactVersion
-                    }
-                    "}]}"
-                    "")
+                sh 'rm -rf globex-war'
+                script {
+                    def server = Artifactory.server 'sndevops1'
+                    def downloadSpec = """{
+                    "files": [
+                    {
+                        "pattern": "corpsite/com/globex/*.war"
+                    }]}"""
+                    server.download spec: downloadSpec
+                }                
+                snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web-1.0.0.war", "repositoryName": "corpsite", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.0.0.${env.artifactVersion}"}]}""")
             }
-        }
+        } 
         stage('Prod') {
+            environment {
+              TOMCAT = credentials('tomcat_user')
+            }
+            
             steps {
                 snDevOpsChange()
-
-
-
-                script {
-
-                    stage('Setup') {
-                        environment {
-                            JENKINS = credentials('jenkins_user')
-                        }
-                        steps {
-                            sh 'rm -rf globex-war'
-                            script {
-                                def server = Artifactory.server 'sndevops1'
-                                def downloadSpec = ""
-                                "{
-                                "files": [{
-                                    "pattern": "corpsite/com/globex/*.war"
-                                }]
-                            }
-                            ""
-                            "
-                            server.download spec: downloadSpec
-                        }
-                        snDevOpsPackage(name: "package", artifactsPayload: ""
-                            "{"
-                            artifacts ": [{"
-                            name ": "
-                            globex - web - 1.0 .0.war ", "
-                            repositoryName ": "
-                            corpsite ", "
-                            pipelineName ": "
-                            $ {
-                                env.JOB_BASE_NAME
-                            }
-                            ", "
-                            version ": "
-                            1.0 .0.$ {
-                                env.artifactVersion
-                            }
-                            "}]}"
-                            "")
-                    }
-                }
-                stage('Prod') {
-                    environment {
-                        TOMCAT = credentials('tomcat_user')
-                    }
-
-                    steps {
-                        snDevOpsChange()
-                        sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://tomcat:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@com/globex/web/globex-web/1.0.0/globex-web-1.0.0.war\''
-                    }
-                }
-
-
-            }
-        }
-    }
-}
+                sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://tomcat:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@com/globex/web/globex-web/1.0.0/globex-web-1.0.0.war\''
+}}}}                
+                
