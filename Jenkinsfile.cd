@@ -4,6 +4,10 @@ pipeline {
         maven 'Jenkins Maven' 
     }
     
+    parameters {
+        string(name: 'artifactVersion')
+    }    
+    
     stages {
         stage('Setup') {
             steps {
