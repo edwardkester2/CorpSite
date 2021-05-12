@@ -33,7 +33,7 @@
                         <div class="module left">
                             <ul class="menu">
                                 <li>
-                                    <a href="/">Home</a>
+                                    <a href="/">myHome</a>
                                 </li>
                                 <li>
                                     <a href="/about">About</a>
