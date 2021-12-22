@@ -21,7 +21,7 @@ pipeline {
         stage('Test') {
         
             environment {
-              TOMCAT = $TOMCAT_USR
+              TOMCAT = credentials('tomcat_user')
             }
         
         
