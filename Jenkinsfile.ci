@@ -21,7 +21,7 @@ pipeline {
         stage('Test') {
         
             environment {
-              TOMCAT = $TOMCAT_USR:$TOMCAT_PSW
+              TOMCAT = $TOMCAT_USR
             }
         
         
