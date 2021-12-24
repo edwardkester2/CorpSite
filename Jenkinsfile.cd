@@ -27,7 +27,7 @@ pipeline {
             
             steps {
                 snDevOpsChange()
-                sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://TOMCAT = 'ec2-34-228-196-57.compute-1.amazonaws.com':8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
+                sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
 }}}}                
 
 
