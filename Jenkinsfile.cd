@@ -15,7 +15,7 @@ pipeline {
               JENKINS = 'ec2-34-228-196-57.compute-1.amazonaws.com'
             }       
         steps {
-                sh "curl --fail -o globex-web.war -u $JENKINS_USR:$JENKINS_PSW \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/job/CorpSiteCI/${params.artifactVersion}/artifact/target/globex-web.war\'"
+                sh "curl --fail -o globex-web.war -u $TOMCAT_USR:$TOMCAT_PSW \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/job/CorpSiteCI/${params.artifactVersion}/artifact/target/globex-web.war\'"
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
 
