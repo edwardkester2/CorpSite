@@ -28,7 +28,7 @@ pipeline {
                 '''
                 sh 'mvn verify'
                 
-                sh "curl --fail -o globex-web.war -u jenkins:jenkins \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/jobs/CorpSiteCI/builds/${params.artifactVersion}/archive/target/globex-web.war\'"
+                sh "curl --fail -o globex-web.war -u jenkins:jenkins \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/var/lib/jenkins/jobs/CorpSiteCI/builds/${params.artifactVersion}/archive/target/globex-web.war\'"
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
 
