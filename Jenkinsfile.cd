@@ -28,7 +28,7 @@ pipeline {
                 '''
                 sh 'mvn verify'
                 
-                sh "curl --fail -o globex-web.war -u $TOMCAT_USR:$TOMCAT_PSW \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/jobs/CorpSiteCI/${params.artifactVersion}/archive/target/globex-web.war\'"
+                sh "curl --fail -o globex-web.war -u jenkins:jenkins \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/jobs/CorpSiteCI/${params.artifactVersion}/archive/target/globex-web.war\'"
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
 
@@ -52,7 +52,7 @@ pipeline {
                 sh 'mvn verify'
                 
                 snDevOpsChange()
-                sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
+                sh 'curl -u jenkins:jenkins --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
 }}}}                
 
 
