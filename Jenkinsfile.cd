@@ -14,20 +14,11 @@ pipeline {
         stage('Setup') {
             
              environment {
-              JENKINS = 'ec2-34-228-196-57.compute-1.amazonaws.com'
+              JENKINS = credentials('jenkins_user')
             }      
             
             
         steps {
-        
-                snDevOpsStep()
-                sh '''
-                    export M2_HOME=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven       # your Mavan home path
-                    export PATH=$PATH:$M2_HOME/bin
-                    mvn --version
-                '''
-                sh 'mvn verify'
-                
                 sh "curl --fail -o globex-web.war -u $JENKINS_USR:$JENKINS_PSW \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/jobs/CorpSiteCI/builds/${params.artifactVersion}/archive/target/globex-web.war\'"
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
@@ -38,21 +29,12 @@ pipeline {
         
         stage('Prod') {
             environment {
-              TOMCAT = 'ec2-34-228-196-57.compute-1.amazonaws.com'
+              TOMCAT = credentials('tomcat_user')
             }
             
             steps {
-            
-              snDevOpsStep()
-                sh '''
-                    export M2_HOME=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven       # your Mavan home path
-                    export PATH=$PATH:$M2_HOME/bin
-                    mvn --version
-                '''
-                sh 'mvn verify'
-                
                 snDevOpsChange()
-                sh 'curl -u $JENKINS_USR:$JENKINS_PSW --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
+                sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
 }}}}                
 
 
