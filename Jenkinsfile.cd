@@ -13,11 +13,6 @@ pipeline {
     
         stage('Setup') {
             
-             environment {
-              JENKINS = credentials('jenkins_user')
-            }      
-            
-            
         steps {
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
@@ -27,9 +22,6 @@ pipeline {
         
         
         stage('Prod') {
-            environment {
-              TOMCAT = credentials('tomcat_user')
-            }
             
             steps {
                 snDevOpsChange()
