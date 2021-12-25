@@ -19,7 +19,6 @@ pipeline {
             
             
         steps {
-                sh "curl --fail -o globex-web.war -u $JENKINS_USR:$JENKINS_PSW \'http://localhost:8080/jobs/CorpSiteCI/builds/${params.artifactVersion}/archive/target/globex-web.war\'"
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
 
@@ -34,7 +33,8 @@ pipeline {
             
             steps {
                 snDevOpsChange()
-                sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://tomcat:8080/manager/text/deploy?path=/globex&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@globex-web.war\''
+                sh 'cp -rp /var/lib/jenkins/jobs/CorpSiteCI/builds/${params.artifactVersion}/archive/target/globex-web.war /opt/tomcat/webapps/globex-web.war'
+                sh 'chown tomcat:tomcat globex-web.war
 }}}}                
 
 
