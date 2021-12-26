@@ -25,9 +25,7 @@ pipeline {
             
             steps {
                 snDevOpsChange()
-                sh 'sudo -s'
                 sh 'cp /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war /opt/tomcat/webapps/globex-web.war'
-                sh 'chown tomcat:tomcat /opt/tomcat/webapps/globex-web.war'
 }}}}                
 
 
