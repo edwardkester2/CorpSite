@@ -33,7 +33,7 @@ pipeline {
 
             steps {
                 snDevOpsChange()
-                sh 'scp -i /var/lib/jenkins/54-236-255-140KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@54.346.255.140:/opt/tomcat/webapps'
+                sh 'scp -i /var/lib/jenkins/54-236-255-140KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@54.236.255.140:/opt/tomcat/webapps'
             }
         }
     }
