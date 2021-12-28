@@ -21,6 +21,7 @@ pipeline {
         stage('QA') {
 
             steps {
+                snDevOpsStep()
                 snDevOpsChange()
             }
         }
@@ -29,15 +30,37 @@ pipeline {
         stage('UAT') {
 
             steps {
+                snDevOpsStep()
                 snDevOpsChange()
                 sh 'scp -i /var/lib/jenkins/18-206-209-72KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@18.206.209.72:/opt/tomcat/webapps'
             }
         }
+        
+        
+        stage('Stage') {
+
+            steps {
+                snDevOpsStep()
+                snDevOpsChange()
+            }
+        }
+        
+        
+        
+         stage('Flag') {
+
+            steps {
+                snDevOpsStep()
+                snDevOpsChange()
+            }
+        }
+        
 
 
         stage('Prod') {
 
             steps {
+                snDevOpsStep()
                 snDevOpsChange()
                 sh 'scp -i /var/lib/jenkins/54-236-255-140KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@54.236.255.140:/opt/tomcat/webapps'
             }
