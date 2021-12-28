@@ -25,7 +25,7 @@ pipeline {
             
             steps {
                 snDevOpsChange()
-                sh 'cp /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war /opt/tomcat/webapps/globex-web.war'
+                sh 'scp -i /var/lib/jenkins/18-206-209-72KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@18.206.209.72/tmp'
 }}}}                
 
 
