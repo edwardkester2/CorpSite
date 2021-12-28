@@ -9,14 +9,12 @@ pipeline {
         stage('Dev') {
             steps {
                 snDevOpsStep()
-				snDevOpsChange()
-                sh ''
-                '
-                export M2_HOME = /var/lib / jenkins / tools / hudson.tasks.Maven_MavenInstallation / Maven# your Mavan home path
-                export PATH = $PATH: $M2_HOME / bin
-                mvn--version
-                    ''
-                '
+		snDevOpsChange()
+                sh '''
+                export M2_HOME = /var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven       # your Mavan home path
+                export PATH = $PATH: $M2_HOME/bin
+                mvn --version
+                '''
                 sh 'mvn compile'
             }
         }
@@ -31,14 +29,12 @@ pipeline {
 
             steps {
                 snDevOpsStep()
-				snDevOpsChange()
-                sh ''
-                '
-                export M2_HOME = /var/lib / jenkins / tools / hudson.tasks.Maven_MavenInstallation / Maven# your Mavan home path
-                export PATH = $PATH: $M2_HOME / bin
-                mvn--version
-                    ''
-                '
+		snDevOpsChange()
+                sh '''
+                export M2_HOME = /var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven               # your Mavan home path
+                export PATH = $PATH: $M2_HOME/bin
+                mvn --version
+                '''
 
                 sh 'mvn verify'
 
@@ -66,7 +62,7 @@ pipeline {
         stage('Flag') {
             steps {
                 snDevOpsStep()
-				snDevOpsChange()
+		snDevOpsChange()
             }
         }
 
