@@ -1,31 +1,40 @@
-
 pipeline {
     agent any
-    tools { 
-        maven 'Maven' 
+    tools {
+        maven 'Maven'
     }
-    
+
     parameters {
         string(name: 'artifactVersion')
     }
-    
+
     stages {
-    
+
         stage('Setup') {
-            
+
         steps {
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
 
-        } 
-        
-        
-        
-        stage('Prod') {
-            
+        }
+
+
+
+        stage('UAT') {
+
             steps {
                 snDevOpsChange()
                 sh 'scp -i /var/lib/jenkins/18-206-209-72KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@18.206.209.72:/opt/tomcat/webapps'
-}}}}                
+            }
+        }
 
 
+        stage('Prod') {
+
+            steps {
+                snDevOpsChange()
+                sh 'scp -i /var/lib/jenkins/54-236-255-140KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@54.346.255.140:/opt/tomcat/webapps'
+            }
+        }
+    }
+}
