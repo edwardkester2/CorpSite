@@ -10,7 +10,7 @@ pipeline {
 
     stages {
 
-        stage('Setup') {
+        stage('Package') {
 
         steps {
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
@@ -18,7 +18,13 @@ pipeline {
 
         }
 
+        stage('QA') {
 
+            steps {
+                snDevOpsChange()
+            }
+        }
+        
 
         stage('UAT') {
 
