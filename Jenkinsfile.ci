@@ -1,58 +1,74 @@
-
 pipeline {
     agent any
-    tools { 
-        maven 'Maven' 
+    tools {
+        maven 'Maven'
     }
 
     stages {
-        stage('Build') {
+
+        stage('Dev') {
             steps {
                 snDevOpsStep()
-                sh '''
-                    export M2_HOME=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven       # your Mavan home path
-                    export PATH=$PATH:$M2_HOME/bin
-                    mvn --version
-                '''
-                sh 'mvn compile'   
+				snDevOpsChange()
+                sh ''
+                '
+                export M2_HOME = /var/lib / jenkins / tools / hudson.tasks.Maven_MavenInstallation / Maven# your Mavan home path
+                export PATH = $PATH: $M2_HOME / bin
+                mvn--version
+                    ''
+                '
+                sh 'mvn compile'
             }
         }
 
         stage('Test') {
-        
+
             environment {
-              TOMCAT = 'ec2-34-228-196-57.compute-1.amazonaws.com'
+                TOMCAT = 'ec2-34-228-196-57.compute-1.amazonaws.com'
             }
-        
-        
-        
+
+
+
             steps {
                 snDevOpsStep()
-                sh '''
-                    export M2_HOME=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/Maven       # your Mavan home path
-                    export PATH=$PATH:$M2_HOME/bin
-                    mvn --version
-                '''
+				snDevOpsChange()
+                sh ''
+                '
+                export M2_HOME = /var/lib / jenkins / tools / hudson.tasks.Maven_MavenInstallation / Maven# your Mavan home path
+                export PATH = $PATH: $M2_HOME / bin
+                mvn--version
+                    ''
+                '
 
                 sh 'mvn verify'
 
 
-                script {     
-                    sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex_test&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@target/globex-web.war\''  
+                script {
+                    sh 'curl -u $TOMCAT_USR:$TOMCAT_PSW --location --request PUT \'http://ec2-34-228-196-57.compute-1.amazonaws.com:8080/manager/text/deploy?path=/globex_test&war=globex-web.war&update=true\' --header \'Content-Type: application/java-archive\' --data-binary \'@target/globex-web.war\''
                 }
             }
             post {
                 success {
-                    junit '**/target/surefire-reports/*.xml' 
+                    junit '**/target/surefire-reports/*.xml'
                 }
             }
         }
 
+		
         stage('Publish') {
-            steps {
+           steps {
                 archiveArtifacts artifacts: 'target/**/*.war', fingerprint: true
                 snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${env.BUILD_NUMBER}.0","semanticVersion": "2.${env.BUILD_NUMBER}.0","repositoryName": "Repo1"}]}""")
             }
         }
+
+		
+        stage('Flag') {
+            steps {
+                snDevOpsStep()
+				snDevOpsChange()
+            }
+        }
+
     }
 }
