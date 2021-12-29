@@ -6,7 +6,7 @@ pipeline {
 
     stages {
 
-        stage('Dev') {
+        stage('CorpSiteCI-Dev') {
 	
             steps {
                 snDevOpsStep()
@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('CorpSiteCI-Test') {
 
             environment {
                 TOMCAT = 'ec2-34-228-196-57.compute-1.amazonaws.com'
@@ -50,7 +50,7 @@ pipeline {
         }
 
 		
-        stage('Publish') {
+        stage('CorpSiteCI-Publish') {
            steps {
                 archiveArtifacts artifacts: 'target/**/*.war', fingerprint: true
                 snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${env.BUILD_NUMBER}.0","semanticVersion": "2.${env.BUILD_NUMBER}.0","repositoryName": "Repo1"}]}""")
@@ -58,7 +58,7 @@ pipeline {
         }
 
 		
-        stage('Flag') {
+        stage('CorpSiteCI-Flag') {
             steps {
                 snDevOpsStep()
 		snDevOpsChange()
