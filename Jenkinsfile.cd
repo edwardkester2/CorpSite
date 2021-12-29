@@ -10,13 +10,13 @@ pipeline {
 
     stages {
 
-        stage('Package') {
+        stage('CorpSiteCD-Package') {
         steps {
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "1.${artifactVersion}"}]}""")
             }
         }
 
-        stage('QA') {
+        stage('CorpSiteCD-QA') {
             steps {
                 snDevOpsStep()
                 snDevOpsChange()
@@ -24,7 +24,7 @@ pipeline {
         }
         
 
-        stage('UAT') {
+        stage('CorpSiteCD-UAT') {
             steps {
                 snDevOpsStep()
                 snDevOpsChange()
@@ -33,7 +33,7 @@ pipeline {
         }
         
         
-        stage('Stage') {
+        stage('CorpSiteCD-Stage') {
             steps {
                 snDevOpsStep()
                 snDevOpsChange()
@@ -41,7 +41,7 @@ pipeline {
         }
         
         
-         stage('Flag') {
+         stage('CorpSiteCD-Flag') {
             steps {
                 snDevOpsStep()
                 snDevOpsChange()
@@ -49,7 +49,7 @@ pipeline {
         }
         
 
-        stage('Prod') {
+        stage('CorpSiteCD-Prod') {
             steps {
                 snDevOpsStep()
                 snDevOpsChange()
