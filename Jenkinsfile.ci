@@ -52,6 +52,8 @@ pipeline {
 		
         stage('CorpSiteCI-Publish') {
            steps {
+                snDevOpsStep()
+		snDevOpsChange()
                 archiveArtifacts artifacts: 'target/**/*.war', fingerprint: true
                 snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${env.BUILD_NUMBER}.0","semanticVersion": "2.${env.BUILD_NUMBER}.0","repositoryName": "Repo1"}]}""")
             }
