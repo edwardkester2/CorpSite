@@ -9,29 +9,7 @@ pipeline {
     }
 
     stages {
-
-        stage('CorpSiteCD-Package') {
-        steps {
-                snDevOpsStep()
-                snDevOpsChange()		
-		
-		archiveArtifacts artifacts: 'target/**/*.war', fingerprint: true
-                snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "2.${artifactVersion}"}]}""")
-				
-		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")
-            }
-        }
-
-
-        stage('CorpSiteCD-QA') {
-            steps {
-                snDevOpsStep()
-                snDevOpsChange()
-				
-		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")			
-            }
-        }
-        
+     
 
         stage('CorpSiteCD-UAT') {
             steps {
@@ -41,36 +19,6 @@ pipeline {
 		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")			
 			
                 sh 'scp -i /var/lib/jenkins/18-206-209-72KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@18.206.209.72:/opt/tomcat/webapps'
-            }
-        }
-        
-        
-        stage('CorpSiteCD-Stage') {
-            steps {
-                snDevOpsStep()
-                snDevOpsChange()
-		
-		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")
-            }
-        }
-        
-        
-         stage('CorpSiteCD-Flag') {
-            steps {
-                snDevOpsStep()
-                snDevOpsChange()
-            }
-        }
-        
-
-        stage('CorpSiteCD-Prod') {
-            steps {
-                snDevOpsStep()
-                snDevOpsChange()
-				
-		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")
-				
-                sh 'scp -i /var/lib/jenkins/54-236-255-140KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@54.236.255.140:/opt/tomcat/webapps'
             }
         }
     }
