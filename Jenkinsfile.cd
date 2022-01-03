@@ -15,6 +15,7 @@ pipeline {
                 snDevOpsStep()
                 snDevOpsChange()		
 		
+		archiveArtifacts artifacts: 'target/**/*.war', fingerprint: true
                 snDevOpsPackage(name: "package", artifactsPayload: """{"artifacts": [{"name": "globex-web.war", "repositoryName": "FakeRepo", "pipelineName": "${env.JOB_BASE_NAME}", "version": "2.${artifactVersion}"}]}""")
 				
 		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")
