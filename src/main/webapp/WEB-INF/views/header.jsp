@@ -47,7 +47,7 @@
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#">Mount Airy, MD.</a>
+                                            <a href="#">Mount Airy, Maryland</a>
                                         </li>
                                         <li>
                                             <a href="#">Cypress Creek</a>
