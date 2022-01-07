@@ -15,6 +15,7 @@
 								<h6 class="uppercase mb32" style="font-size: 1.2em;">Not an evil organization.</h6>
 								<p class="text-center mb0">
 									We belive in the power of teams and take care of our employees
+									Stay Hungry & Humble
 								</p>
 							</div>
 						</div>
