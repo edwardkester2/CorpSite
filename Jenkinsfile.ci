@@ -28,7 +28,7 @@ pipeline {
         stage('CorpSiteCI-Test') {
 
             environment {
-                TOMCAT = 'ec2-34-228-196-57.compute-1.amazonaws.com'
+		TOMCAT = 'ec2-54-90-138-213.compute-1.amazonaws.com'
             }
 
 
