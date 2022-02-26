@@ -41,7 +41,7 @@ pipeline {
 		
 		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")			
 			
-                sh 'scp -i /var/lib/jenkins/18-206-209-72KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@18.206.209.72:/opt/tomcat/webapps'
+                sh 'scp -i /var/lib/jenkins/107-22-148-218KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@107.22.148.218:/opt/tomcat/webapps'
             }
         }
         
@@ -71,7 +71,7 @@ pipeline {
 				
 		snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${artifactVersion}.0","semanticVersion": "2.${artifactVersion}.0","repositoryName": "Repo1"}]}""")
 				
-                sh 'scp -i /var/lib/jenkins/54-236-255-140KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@54.236.255.140:/opt/tomcat/webapps'
+                sh 'scp -i /var/lib/jenkins/3-91-59-175KeyPair.pem /var/lib/jenkins/jobs/CorpSiteCI/builds/${artifactVersion}/archive/target/globex-web.war ec2-user@3.91.59.175:/opt/tomcat/webapps'
             }
         }
     }
