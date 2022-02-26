@@ -50,7 +50,7 @@
                                             <a href="#">Mount Airy, Maryland</a>
                                         </li>
                                         <li>
-                                            <a href="#">Mount Airy, NC.</a>
+                                            <a href="#">Mount Airy, North Carolina</a>
                                         </li>
                                         <li>
                                             <a href="#">Cypress Creek</a>
