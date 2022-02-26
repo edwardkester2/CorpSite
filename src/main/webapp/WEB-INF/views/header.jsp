@@ -47,7 +47,7 @@
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#">Mount Airy, Maryland</a>
+                                            <a href="#">Mount Airy, Md</a>
                                         </li>
                                         <li>
                                             <a href="#">Mount Airy, North Carolina</a>
